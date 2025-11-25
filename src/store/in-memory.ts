@@ -1,6 +1,7 @@
 import { IArtist, IAlbum, ITrack, IFavorites } from 'src/types';
 import type { Store } from './interfaces';
 import { uuid } from 'src/utils/utils';
+import { Injectable } from '@nestjs/common';
 
 export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
   protected store = new Map<string, T>();
@@ -41,6 +42,7 @@ export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
   }
 }
 
+@Injectable()
 export class FavoritesStore implements IFavorites {
   artists: string[] = [];
   albums: string[] = [];

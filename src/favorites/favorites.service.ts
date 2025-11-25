@@ -12,23 +12,35 @@ export class FavoritesService {
     private trackStore: TrackStore,
   ) {}
 
-  addArtist(id: string) {
-    throw new Error('Method not implemented.');
+  async addArtist(id: string) {
+    const artist = await this.artistStore.findOne(id);
+    if (artist) {
+      return this.favoritesStore.addArtist(artist);
+    }
+    return false;
   }
-  addTrack(id: string) {
-    throw new Error('Method not implemented.');
+  async addTrack(id: string) {
+    const track = await this.trackStore.findOne(id);
+    if (track) {
+      return this.favoritesStore.addTrack(track);
+    }
+    return false;
   }
-  addAlbum(id: string) {
-    throw new Error('Method not implemented.');
+  async addAlbum(id: string) {
+    const album = await this.albumStore.findOne(id);
+    if (album) {
+      return this.favoritesStore.addAlbum(album);
+    }
+    return false;
   }
   deleteArtist(id: string) {
-    throw new Error('Method not implemented.');
+    return this.favoritesStore.deleteArtist(id);
   }
   deleteTrack(id: string) {
-    throw new Error('Method not implemented.');
+    return this.favoritesStore.deleteTrack(id);
   }
   deleteAlbum(id: string) {
-    throw new Error('Method not implemented.');
+    return this.favoritesStore.deleteAlbum(id);
   }
 
   async findAll(): Promise<FavoritesResponse> {

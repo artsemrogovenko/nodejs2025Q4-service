@@ -1,3 +1,5 @@
+import type { StatusCodes } from 'http-status-codes';
+
 export interface IUser {
   id: string; // uuid v4
   login: string;
@@ -44,3 +46,12 @@ export interface FavoritesResponse {
   albums: IAlbum[];
   tracks: ITrack[];
 }
+
+export type Codes =
+  | StatusCodes.OK
+  | StatusCodes.CREATED
+  | StatusCodes.NO_CONTENT
+  | StatusCodes.BAD_REQUEST
+  | StatusCodes.FORBIDDEN
+  | StatusCodes.NOT_FOUND
+  | StatusCodes.UNPROCESSABLE_ENTITY;
