@@ -1,8 +1,5 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
-import type { CreateAlbumDto } from 'src/album/dto/create-album.dto';
-import type { CreateArtistDto } from 'src/artist/dto/create-artist.dto';
-import type { CreateTrackDto } from 'src/track/dto/create-track.dto';
 
 @Controller('favs')
 export class FavoritesController {
@@ -14,16 +11,16 @@ export class FavoritesController {
   }
 
   @Post('artist/:id')
-  addArtist(@Body() favoriteArtistDtoDto: CreateArtistDto) {
-    return this.favoritesService.addArtist(favoriteArtistDtoDto);
+  addArtist(@Body() favoriteArtistId: string) {
+    return this.favoritesService.addArtist(favoriteArtistId);
   }
   @Post('track/:id')
-  addTrack(@Body() favoriteTrackDto: CreateTrackDto) {
-    return this.favoritesService.addTrack(favoriteTrackDto);
+  addTrack(@Body() favoriteTrackId: string) {
+    return this.favoritesService.addTrack(favoriteTrackId);
   }
   @Post('album/:id')
-  addAlbum(@Body() favoriteAlbumDto: CreateAlbumDto) {
-    return this.favoritesService.addAlbum(favoriteAlbumDto);
+  addAlbum(@Body() favoriteAlbumId: string) {
+    return this.favoritesService.addAlbum(favoriteAlbumId);
   }
 
   @Delete('artist/:id')

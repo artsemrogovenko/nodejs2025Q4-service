@@ -1,11 +1,12 @@
+import { IArtist, IAlbum, ITrack, IFavorites } from 'src/types';
 import type { Store } from './interfaces';
-import { randomUUID } from 'node:crypto';
+import { uuid } from 'src/utils/utils';
 
 export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
   protected store = new Map<string, T>();
 
   async create(dto: C): Promise<T> {
-    const id = randomUUID();
+    const id = uuid();
     const entity: T = {
       id: id,
       ...dto,
@@ -37,5 +38,59 @@ export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
 
   hasObject(id: string): boolean {
     return this.store.has(id);
+  }
+}
+
+export class FavoritesStore implements IFavorites {
+  artists: string[] = [];
+  albums: string[] = [];
+  tracks: string[] = [];
+
+  addArtist(artist: IArtist) {
+    this.artists.push(artist.id);
+    return true;
+  }
+  addTrack(track: ITrack) {
+    this.tracks.push(track.id);
+    return true;
+  }
+  addAlbum(album: IAlbum) {
+    this.albums.push(album.id);
+    return true;
+  }
+  deleteArtist(id: string) {
+    const index = this.getIndex(this.artists, id);
+    if (index > -1) {
+      this.artists.slice(index, 1);
+      return true;
+    }
+    return false;
+  }
+  deleteTrack(id: string) {
+    const index = this.getIndex(this.tracks, id);
+    if (index > -1) {
+      this.tracks.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+  deleteAlbum(id: string) {
+    const index = this.getIndex(this.albums, id);
+    if (index > -1) {
+      this.albums.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+  getAll(): Promise<IFavorites> {
+    return Promise.resolve({
+      artists: this.artists,
+      albums: this.albums,
+      tracks: this.tracks,
+    });
+  }
+
+  private getIndex(array: string[], id: string) {
+    return array.indexOf(id);
   }
 }

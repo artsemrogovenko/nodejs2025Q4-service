@@ -5,10 +5,7 @@ import { AlbumStore } from 'src/store/appStores';
 
 @Injectable()
 export class AlbumService {
-  private store: AlbumStore;
-  constructor() {
-    this.store = new AlbumStore();
-  }
+  constructor(private store: AlbumStore) {}
 
   create(createAlbumDto: CreateAlbumDto) {
     return 'This action adds a new album';

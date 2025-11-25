@@ -1,7 +1,13 @@
+import { IsBoolean, IsString } from 'class-validator';
 import type { IArtist } from 'src/types';
 
 export class Artist implements IArtist {
-  id: string;
-  name: string;
-  grammy: boolean;
+  @IsString()
+  id!: string;
+
+  @IsString()
+  name!: string;
+
+  @IsBoolean()
+  grammy!: boolean;
 }

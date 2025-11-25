@@ -5,10 +5,7 @@ import { UserStore } from 'src/store/appStores';
 
 @Injectable()
 export class UserService {
-  private store: UserStore;
-  constructor() {
-    this.store = new UserStore();
-  }
+  constructor(private store: UserStore) {}
 
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
@@ -23,7 +20,7 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return `This action updates a #${id} user `;
   }
 
   remove(id: number) {

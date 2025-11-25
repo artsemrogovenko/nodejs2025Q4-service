@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import type { CreateArtistDto } from 'src/artist/dto/create-artist.dto';
-import type { CreateTrackDto } from 'src/track/dto/create-track.dto';
-import type { CreateAlbumDto } from 'src/album/dto/create-album.dto';
-import { FavoritesStore } from 'src/store/appStores';
+import { AlbumStore, ArtistStore, TrackStore } from 'src/store/appStores';
+import { FavoritesStore } from 'src/store/in-memory';
+import { FavoritesResponse, IAlbum, IArtist, ITrack } from 'src/types';
 
 @Injectable()
 export class FavoritesService {
-  private store: FavoritesStore;
-  constructor() {
-    this.store = new FavoritesStore();
-  }
+  constructor(
+    private favoritesStore: FavoritesStore,
+    private albumStore: AlbumStore,
+    private artistStore: ArtistStore,
+    private trackStore: TrackStore,
+  ) {}
 
-  addArtist(favoriteArtistDtoDto: CreateArtistDto) {
+  addArtist(id: string) {
     throw new Error('Method not implemented.');
   }
-  addTrack(favoriteTrackDto: CreateTrackDto) {
+  addTrack(id: string) {
     throw new Error('Method not implemented.');
   }
-  addAlbum(favoriteAlbumDto: CreateAlbumDto) {
+  addAlbum(id: string) {
     throw new Error('Method not implemented.');
   }
   deleteArtist(id: string) {
@@ -30,7 +31,18 @@ export class FavoritesService {
     throw new Error('Method not implemented.');
   }
 
-  findAll() {
-    return `This action returns all favorites`;
+  async findAll(): Promise<FavoritesResponse> {
+    const { albums, artists, tracks } = await this.favoritesStore.getAll();
+    const [alb, art, trks] = await Promise.all([
+      Promise.all(albums.map((id) => this.albumStore.findOne(id))),
+      Promise.all(artists.map((id) => this.artistStore.findOne(id))),
+      Promise.all(tracks.map((id) => this.trackStore.findOne(id))),
+    ]);
+
+    return {
+      albums: alb.filter(Boolean) as IAlbum[],
+      artists: art.filter(Boolean) as IArtist[],
+      tracks: trks.filter(Boolean) as ITrack[],
+    };
   }
 }

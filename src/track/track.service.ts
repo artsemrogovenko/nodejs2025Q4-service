@@ -5,10 +5,7 @@ import { TrackStore } from 'src/store/appStores';
 
 @Injectable()
 export class TrackService {
-  private store: TrackStore;
-  constructor() {
-    this.store = new TrackStore();
-  }
+  constructor(private store: TrackStore) {}
 
   create(createTrackDto: CreateTrackDto) {
     return 'This action adds a new track';

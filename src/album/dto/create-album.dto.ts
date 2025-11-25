@@ -1,10 +1,7 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import type { IAlbum } from 'src/types';
 
-export class CreateAlbumDto implements IAlbum {
-  @IsString()
-  id!: string;
-
+export class CreateAlbumDto implements Omit<IAlbum, 'id'> {
   @IsString()
   name!: string;
 

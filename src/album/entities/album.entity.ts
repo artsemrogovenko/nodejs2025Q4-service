@@ -1,10 +1,17 @@
+import { IsEmpty, IsNumber, IsString } from 'class-validator';
 import type { IAlbum } from 'src/types';
 
 export class Album implements IAlbum {
-  constructor(
-    public readonly id: string,
-    public readonly name: string,
-    public readonly year: number,
-    public readonly artistId: string | null = null,
-  ) {}
+  @IsString()
+  id!: string;
+
+  @IsString()
+  name!: string;
+
+  @IsNumber()
+  year!: number;
+
+  @IsString()
+  @IsEmpty()
+  artistId!: string | null;
 }
