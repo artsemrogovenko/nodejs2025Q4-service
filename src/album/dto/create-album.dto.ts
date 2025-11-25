@@ -1,8 +1,17 @@
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import type { IAlbum } from 'src/types';
 
 export class CreateAlbumDto implements IAlbum {
-  id: string;
-  name: string;
-  year: number;
-  artistId: string | null;
+  @IsString()
+  id!: string;
+
+  @IsString()
+  name!: string;
+
+  @IsNumber()
+  year!: number;
+
+  @IsOptional()
+  @IsString()
+  artistId!: string | null;
 }

@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import type { ITrack } from 'src/types';
+import { TrackStore } from 'src/store/appStores';
 
 @Injectable()
 export class TrackService {
-  private tracks: ITrack[];
+  private store: TrackStore;
+  constructor() {
+    this.store = new TrackStore();
+  }
 
   create(createTrackDto: CreateTrackDto) {
     return 'This action adds a new track';

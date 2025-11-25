@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import type { CreateArtistDto } from 'src/artist/dto/create-artist.dto';
 import type { CreateTrackDto } from 'src/track/dto/create-track.dto';
 import type { CreateAlbumDto } from 'src/album/dto/create-album.dto';
-import type { IAlbum, IArtist, ITrack } from 'src/types';
+import { FavoritesStore } from 'src/store/appStores';
 
 @Injectable()
 export class FavoritesService {
-  private artists: IArtist[];
-  private albums: IAlbum[];
-  private tracks: ITrack[];
+  private store: FavoritesStore;
+  constructor() {
+    this.store = new FavoritesStore();
+  }
 
   addArtist(favoriteArtistDtoDto: CreateArtistDto) {
     throw new Error('Method not implemented.');

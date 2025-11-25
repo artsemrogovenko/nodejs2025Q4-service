@@ -56,4 +56,4 @@ module.exports = defineConfig([{
             argsIgnorePattern: "^_",
         }],
     },
-}, globalIgnores(["**/.eslintrc.js",'**/*.spec.ts'])]);
+}, globalIgnores(["**/.eslintrc.js",'**/*.spec.ts','**/*.d.ts','test/**/*.*'])]);

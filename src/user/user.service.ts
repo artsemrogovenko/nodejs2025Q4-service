@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import type { IUser } from 'src/types';
+import { UserStore } from 'src/store/appStores';
 
 @Injectable()
 export class UserService {
-  private users: IUser[];
+  private store: UserStore;
+  constructor() {
+    this.store = new UserStore();
+  }
 
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';

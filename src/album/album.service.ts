@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import type { IAlbum } from 'src/types';
+import { AlbumStore } from 'src/store/appStores';
 
 @Injectable()
 export class AlbumService {
-  private albums: IAlbum[];
+  private store: AlbumStore;
+  constructor() {
+    this.store = new AlbumStore();
+  }
 
   create(createAlbumDto: CreateAlbumDto) {
     return 'This action adds a new album';

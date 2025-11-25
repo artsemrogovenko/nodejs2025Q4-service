@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import type { IArtist } from 'src/types';
+import { ArtistStore } from 'src/store/appStores';
 
 @Injectable()
 export class ArtistService {
-  private artists: IArtist[];
+  private store: ArtistStore;
+  constructor() {
+    this.store = new ArtistStore();
+  }
 
   create(createArtistDto: CreateArtistDto) {
     return 'This action adds a new artist';
