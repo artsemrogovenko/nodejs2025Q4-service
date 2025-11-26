@@ -50,14 +50,14 @@ export class FavoritesInterceptor implements NestInterceptor {
           } else {
             const id = request.params.id;
             const storeName: string = request.originalUrl
-              .replace(`/favs/`, '')
+              .replace(`favs`, '')
               .replace(`${id}`, '')
-              .replace('/', '')
+              .replaceAll('/', '')
               .toUpperCase();
 
             throw new HttpException(
               {
-                message: `${request.params.id} not exist in ${storeName}`,
+                message: `${id} not exist in ${storeName}`,
                 error: 'Unprocessable Entity',
               },
               StatusCodes.UNPROCESSABLE_ENTITY,
@@ -65,6 +65,42 @@ export class FavoritesInterceptor implements NestInterceptor {
           }
         }
         return data;
+      }),
+    );
+  }
+}
+
+@Injectable()
+export class BaseServiceInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
+    const response = context.switchToHttp().getResponse();
+
+    return next.handle().pipe(
+      map((data) => {
+        if (data) {
+          if (request.method === 'DELETE') {
+            response.status(StatusCodes.NO_CONTENT);
+          }
+          if (typeof data === 'object') return data;
+          return {
+            message: 'Success',
+          };
+        } else {
+          const id = request.params.id;
+          const storeName: string = request.originalUrl
+            .replace(`${id}`, '')
+            .replaceAll('/', '')
+            .toUpperCase();
+
+          throw new HttpException(
+            {
+              message: `${request.params.id} not exist in ${storeName}`,
+              error: 'Not found',
+            },
+            StatusCodes.NOT_FOUND,
+          );
+        }
       }),
     );
   }
