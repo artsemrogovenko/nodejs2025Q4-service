@@ -40,6 +40,9 @@ export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
   hasObject(id: string): boolean {
     return this.store.has(id);
   }
+  public get db(): Map<string, T> {
+    return this.store;
+  }
 }
 
 @Injectable()
