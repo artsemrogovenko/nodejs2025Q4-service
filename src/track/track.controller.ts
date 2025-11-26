@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch as Put,
+  Put,
   Param,
   Delete,
 } from '@nestjs/common';

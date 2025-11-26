@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
+import { FavoritesInterceptor } from 'src/store/interceptors';
 
 @Controller('favs')
+@UseInterceptors(FavoritesInterceptor)
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
@@ -11,16 +21,16 @@ export class FavoritesController {
   }
 
   @Post('artist/:id')
-  addArtist(@Body() favoriteArtistId: string) {
-    return this.favoritesService.addArtist(favoriteArtistId);
+  addArtist(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.addArtist(id);
   }
   @Post('track/:id')
-  addTrack(@Body() favoriteTrackId: string) {
-    return this.favoritesService.addTrack(favoriteTrackId);
+  addTrack(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.addTrack(id);
   }
   @Post('album/:id')
-  addAlbum(@Body() favoriteAlbumId: string) {
-    return this.favoritesService.addAlbum(favoriteAlbumId);
+  addAlbum(@Param('id', ParseUUIDPipe) id: string) {
+    return this.favoritesService.addAlbum(id);
   }
 
   @Delete('artist/:id')

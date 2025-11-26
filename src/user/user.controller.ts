@@ -3,15 +3,18 @@ import {
   Get,
   Post,
   Body,
-  Patch as Put,
+  Put,
   Param,
   Delete,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ExcludePassword } from 'src/store/interceptors';
 
 @Controller('user')
+@UseInterceptors(ExcludePassword)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

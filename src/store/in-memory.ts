@@ -1,6 +1,6 @@
 import { IArtist, IAlbum, ITrack, IFavorites } from 'src/types';
 import type { Store } from './interfaces';
-import { uuid } from 'src/utils/utils';
+import { getIndex, uuid } from 'src/utils/utils';
 import { Injectable } from '@nestjs/common';
 
 export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
@@ -61,7 +61,7 @@ export class FavoritesStore implements IFavorites {
     return true;
   }
   deleteArtist(id: string) {
-    const index = this.getIndex(this.artists, id);
+    const index = getIndex(this.artists, id);
     if (index > -1) {
       this.artists.slice(index, 1);
       return true;
@@ -69,7 +69,7 @@ export class FavoritesStore implements IFavorites {
     return false;
   }
   deleteTrack(id: string) {
-    const index = this.getIndex(this.tracks, id);
+    const index = getIndex(this.tracks, id);
     if (index > -1) {
       this.tracks.splice(index, 1);
       return true;
@@ -77,7 +77,7 @@ export class FavoritesStore implements IFavorites {
     return false;
   }
   deleteAlbum(id: string) {
-    const index = this.getIndex(this.albums, id);
+    const index = getIndex(this.albums, id);
     if (index > -1) {
       this.albums.splice(index, 1);
       return true;
@@ -90,9 +90,5 @@ export class FavoritesStore implements IFavorites {
       albums: this.albums,
       tracks: this.tracks,
     });
-  }
-
-  private getIndex(array: string[], id: string) {
-    return array.indexOf(id);
   }
 }
