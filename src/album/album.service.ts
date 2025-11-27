@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { AlbumStore, type AppStore } from 'src/store/appStores';
+import { AlbumStore, AppStore } from 'src/store/appStores';
 import { BaseService } from 'src/store/baseService';
 import { IAlbum } from 'src/types';
 
@@ -18,6 +18,16 @@ export class AlbumService extends BaseService<
     super(store);
   }
   async remove(id: string): Promise<boolean> {
-    return this.globalStore.deleteAlbum(id);
+    return await this.globalStore.deleteAlbum(id);
+  }
+  async update(id: string, updateDto: UpdateAlbumDto): Promise<IAlbum> {
+    const album = await this.store.findOne(id);
+    if (album) {
+      if (album.artistId !== updateDto.artistId && updateDto.artistId) {
+        await this.globalStore.refArtistToAlbum(updateDto.artistId, album.id);
+      }
+      return this.store.update(album.id, updateDto);
+    }
+    return album;
   }
 }

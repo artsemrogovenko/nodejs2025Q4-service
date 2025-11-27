@@ -7,7 +7,7 @@ import type { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import type { UpdateAlbumDto } from 'src/album/dto/update-album.dto';
 import type { CreateArtistDto } from 'src/artist/dto/create-artist.dto';
 import type { UpdateArtistDto } from 'src/artist/dto/update-artist.dto';
-import { InMemoryStore, type FavoritesStore } from './in-memory';
+import { InMemoryStore, FavoritesStore } from './in-memory';
 import { Injectable } from '@nestjs/common';
 import { MyNotFound } from 'src/utils/utils';
 
