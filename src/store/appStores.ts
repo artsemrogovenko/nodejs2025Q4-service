@@ -94,7 +94,6 @@ export class AppStore {
       track.artistId = null;
       await this.trackStore.update(track.id, track);
     }
-    this.favoritesStore.deleteArtist(artistId);
   }
 
   async unrefArtistInAlbum(artistId: string) {

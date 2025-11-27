@@ -21,11 +21,19 @@ export class TrackService extends BaseService<
   async update(id: string, updateDto: UpdateTrackDto): Promise<ITrack> {
     const track = await this.store.findOne(id);
     if (track) {
-      if (track.albumId !== updateDto.albumId && updateDto.albumId) {
-        await this.globalStore.refAlbumToTrack(updateDto.albumId, track.id);
+      if (track.albumId !== updateDto.albumId) {
+        if (updateDto.albumId) {
+          await this.globalStore.refAlbumToTrack(track.id, updateDto.albumId);
+        } else {
+          await this.globalStore.unrefArtistInAlbum(id);
+        }
       }
-      if (track.artistId !== updateDto.artistId && updateDto.artistId) {
-        await this.globalStore.refArtistToTrack(updateDto.artistId, track.id);
+      if (track.artistId !== updateDto.artistId) {
+        if (updateDto.artistId) {
+          await this.globalStore.refArtistToTrack(track.id, updateDto.artistId);
+        } else {
+          await this.globalStore.unrefArtistInTrack(track.artistId);
+        }
       }
       return this.store.update(track.id, updateDto);
     }

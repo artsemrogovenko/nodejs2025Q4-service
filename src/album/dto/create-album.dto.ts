@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsString, ValidateIf } from 'class-validator';
 import type { IAlbum } from 'src/types';
 
 export class CreateAlbumDto implements Omit<IAlbum, 'id'> {
@@ -8,7 +8,7 @@ export class CreateAlbumDto implements Omit<IAlbum, 'id'> {
   @IsNumber()
   year!: number;
 
-  @IsOptional()
+  @ValidateIf((obj) => obj.artistId !== null)
   @IsString()
   artistId!: string | null;
 }

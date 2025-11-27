@@ -20,13 +20,18 @@ export class AlbumService extends BaseService<
   async remove(id: string): Promise<boolean> {
     return await this.globalStore.deleteAlbum(id);
   }
+
   async update(id: string, updateDto: UpdateAlbumDto): Promise<IAlbum> {
     const album = await this.store.findOne(id);
     if (album) {
-      if (album.artistId !== updateDto.artistId && updateDto.artistId) {
-        await this.globalStore.refArtistToAlbum(updateDto.artistId, album.id);
+      if (album.artistId !== updateDto.artistId) {
+        if (updateDto.artistId) {
+          await this.globalStore.refArtistToAlbum(album.id, updateDto.artistId);
+        } else {
+          await this.globalStore.unrefArtistInAlbum(album.artistId);
+        }
+        return this.store.update(album.id, updateDto);
       }
-      return this.store.update(album.id, updateDto);
     }
     return album;
   }
