@@ -4,6 +4,7 @@ import {
   ArgumentMetadata,
   BadRequestException,
   type Type,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { validate, type ValidationError } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
@@ -11,7 +12,19 @@ import { APP_PIPE } from '@nestjs/core';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
-  async transform(value: any, { metatype }: ArgumentMetadata) {
+  private readonly uuidPipe: ParseUUIDPipe;
+
+  constructor() {
+    this.uuidPipe = new ParseUUIDPipe({
+      version: '4',
+    });
+  }
+
+  async transform(value: any, metadata: ArgumentMetadata) {
+    const { metatype, type, data } = metadata;
+    if (type === 'param' && data === 'id') {
+      return await this.uuidPipe.transform(value, metadata);
+    }
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }

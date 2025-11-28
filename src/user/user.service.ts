@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserStore } from 'src/store/appStores';
 import { IUser } from 'src/types';
 import { BaseService } from 'src/store/baseService';
-import { timestamp, uuid } from 'src/utils/utils';
+import { timestamp } from 'src/utils/utils';
 
 @Injectable()
 export class UserService extends BaseService<
@@ -34,7 +34,7 @@ export class UserService extends BaseService<
 
   async create(createDto: CreateUserDto): Promise<IUser> {
     const user: IUser = {
-      id: uuid(),
+      id: null,
       login: createDto.login,
       password: createDto.password,
       version: 1,

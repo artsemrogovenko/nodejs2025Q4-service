@@ -69,19 +69,19 @@ export class AppStore {
       track.artistId = artistId;
       await this.trackStore.update(track.id, track);
     } else {
-      MyNotFound('albumId', 'TRACK');
+      MyNotFound('trackId', 'TRACK');
     }
   }
   async refAlbumToTrack(trackId: string, albumId: string) {
     if (!this.albumStore.hasObject(albumId)) {
-      MyNotFound('artistId', 'ARTIST');
+      MyNotFound('albumId', 'ALBUM');
     }
     const track = await this.trackStore.findOne(trackId);
     if (track) {
       track.albumId = albumId;
       await this.trackStore.update(track.id, track);
     } else {
-      MyNotFound('albumId', 'TRACK');
+      MyNotFound('trackId', 'TRACK');
     }
   }
 

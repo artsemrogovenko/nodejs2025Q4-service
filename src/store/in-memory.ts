@@ -9,8 +9,8 @@ export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
   async create(dto: C): Promise<T> {
     const id = uuid();
     const entity: T = {
-      id: id,
       ...dto,
+      id: id,
     } as T;
     this.store.set(id, entity);
     return entity;
@@ -28,7 +28,7 @@ export class InMemoryStore<T, C, U = Partial<C>> implements Store<T, C, U> {
     const oldvalue = this.store.get(id);
     if (!oldvalue) return undefined;
 
-    const updated = { ...oldvalue, ...updateDto };
+    const updated = { ...oldvalue, ...updateDto, id: id };
     this.store.set(id, updated);
     return updated;
   }
@@ -52,21 +52,27 @@ export class FavoritesStore implements IFavorites {
   tracks: string[] = [];
 
   addArtist(artist: IArtist) {
-    this.artists.push(artist.id);
+    if (!this.artists.includes(artist.id)) {
+      this.artists.push(artist.id);
+    }
     return true;
   }
   addTrack(track: ITrack) {
-    this.tracks.push(track.id);
+    if (!this.tracks.includes(track.id)) {
+      this.tracks.push(track.id);
+    }
     return true;
   }
   addAlbum(album: IAlbum) {
-    this.albums.push(album.id);
+    if (!this.albums.includes(album.id)) {
+      this.albums.push(album.id);
+    }
     return true;
   }
   deleteArtist(id: string) {
     const index = getIndex(this.artists, id);
     if (index > -1) {
-      this.artists.slice(index, 1);
+      this.artists.splice(index, 1);
       return true;
     }
     return false;
