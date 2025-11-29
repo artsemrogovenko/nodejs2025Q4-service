@@ -40,7 +40,7 @@ export class UserStore extends InMemoryStore<
 > {}
 
 @Injectable()
-export class AppStore {
+export class GlobalService {
   constructor(
     private artistStore: ArtistStore,
     private albumStore: AlbumStore,
@@ -88,7 +88,7 @@ export class AppStore {
   async unrefArtistInTrack(artistId: string) {
     if (!this.artistStore.hasObject(artistId)) MyNotFound('artistId', 'ARTIST');
     const track = (await this.trackStore.findAll())
-      .filter((track) => track.albumId === artistId)
+      .filter((track) => track.artistId === artistId)
       .pop();
     if (track) {
       track.artistId = null;

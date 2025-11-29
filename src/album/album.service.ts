@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { AlbumStore, AppStore } from 'src/store/appStores';
+import { AlbumStore, GlobalService } from 'src/store/appStores';
 import { BaseService } from 'src/store/baseService';
 import { IAlbum } from 'src/types';
 
@@ -13,12 +13,12 @@ export class AlbumService extends BaseService<
 > {
   constructor(
     protected readonly store: AlbumStore,
-    protected readonly globalStore: AppStore,
+    protected readonly globalService: GlobalService,
   ) {
     super(store);
   }
   async remove(id: string): Promise<boolean> {
-    return await this.globalStore.deleteAlbum(id);
+    return await this.globalService.deleteAlbum(id);
   }
 
   async update(id: string, updateDto: UpdateAlbumDto): Promise<IAlbum> {
@@ -26,9 +26,12 @@ export class AlbumService extends BaseService<
     if (album) {
       if (album.artistId !== updateDto.artistId) {
         if (updateDto.artistId) {
-          await this.globalStore.refArtistToAlbum(album.id, updateDto.artistId);
+          await this.globalService.refArtistToAlbum(
+            album.id,
+            updateDto.artistId,
+          );
         } else {
-          await this.globalStore.unrefArtistInAlbum(album.artistId);
+          await this.globalService.unrefArtistInAlbum(album.artistId);
         }
         return this.store.update(album.id, updateDto);
       }

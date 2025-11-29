@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackStore, AppStore } from 'src/store/appStores';
+import { TrackStore, GlobalService } from 'src/store/appStores';
 import { ITrack } from 'src/types';
 import { BaseService } from 'src/store/baseService';
 
@@ -13,7 +13,7 @@ export class TrackService extends BaseService<
 > {
   constructor(
     protected readonly store: TrackStore,
-    private readonly globalStore: AppStore,
+    private readonly globalService: GlobalService,
   ) {
     super(store);
   }
@@ -23,16 +23,19 @@ export class TrackService extends BaseService<
     if (track) {
       if (track.albumId !== updateDto.albumId) {
         if (updateDto.albumId) {
-          await this.globalStore.refAlbumToTrack(track.id, updateDto.albumId);
+          await this.globalService.refAlbumToTrack(track.id, updateDto.albumId);
         } else {
-          await this.globalStore.unrefArtistInAlbum(id);
+          await this.globalService.unrefArtistInAlbum(id);
         }
       }
       if (track.artistId !== updateDto.artistId) {
         if (updateDto.artistId) {
-          await this.globalStore.refArtistToTrack(track.id, updateDto.artistId);
+          await this.globalService.refArtistToTrack(
+            track.id,
+            updateDto.artistId,
+          );
         } else {
-          await this.globalStore.unrefArtistInTrack(track.artistId);
+          await this.globalService.unrefArtistInTrack(track.artistId);
         }
       }
       return this.store.update(track.id, updateDto);
