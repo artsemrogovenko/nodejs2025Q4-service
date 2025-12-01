@@ -4,9 +4,10 @@ import { ValidationPipe } from './store/validation';
 import { SwaggerModule } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
 import * as YAML from 'yaml';
-import * as dotenv from 'dotenv';
+import { loadEnvFile }from'node:process';
 
-dotenv.config({ path: './.env' });
+loadEnvFile('.env');
+
 const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
