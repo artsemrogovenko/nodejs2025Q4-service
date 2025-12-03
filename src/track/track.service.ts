@@ -4,10 +4,11 @@ import { UpdateTrackDto } from './dto/update-track.dto';
 import { TrackStore, GlobalService } from 'src/store/appStores';
 import { ITrack } from 'src/types';
 import { BaseService } from 'src/store/baseService';
+import { Track } from './entities/track.entity';
 
 @Injectable()
 export class TrackService extends BaseService<
-  ITrack,
+  Track,
   CreateTrackDto,
   UpdateTrackDto
 > {

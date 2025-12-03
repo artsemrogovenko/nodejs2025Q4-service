@@ -1,10 +1,10 @@
 import { IsBoolean, IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import type { IArtist } from 'src/types';
-import { Entity } from 'typeorm';
+import { Column, Entity, ObjectLiteral, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class Artist implements IArtist {
+export class Artist implements ObjectLiteral {
   @IsUUID()
+  @PrimaryColumn()
   id!: string;
 
   @IsString()
@@ -12,5 +12,6 @@ export class Artist implements IArtist {
   name!: string;
 
   @IsBoolean()
+  @Column({ type: 'boolean' })
   grammy!: boolean;
 }

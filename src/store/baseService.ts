@@ -1,9 +1,9 @@
 import { BadRequestException } from '@nestjs/common';
 import { isValidUuid } from 'src/utils/utils';
-import { Store } from './interfaces';
+import { PostgresStore } from './dbStore';
 
 export abstract class BaseService<T, C, U> {
-  constructor(protected readonly store: Store<T, C, U>) {}
+  constructor(protected readonly store: PostgresStore<T, C, U>) {}
 
   async create(createDto: C): Promise<T> {
     return await this.store.create(createDto);

@@ -1,4 +1,3 @@
-import type { IAlbum, IArtist, ITrack, IUser } from 'src/types';
 import type { CreateTrackDto } from 'src/track/dto/create-track.dto';
 import type { UpdateTrackDto } from 'src/track/dto/update-track.dto';
 import type { UpdateUserDto } from 'src/user/dto/update-user.dto';
@@ -7,37 +6,80 @@ import type { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import type { UpdateAlbumDto } from 'src/album/dto/update-album.dto';
 import type { CreateArtistDto } from 'src/artist/dto/create-artist.dto';
 import type { UpdateArtistDto } from 'src/artist/dto/update-artist.dto';
-import { InMemoryStore, FavoritesStore } from './in-memory';
+import { FavoritesStore } from './in-memory';
 import { Injectable } from '@nestjs/common';
 import { MyNotFound } from 'src/utils/utils';
+import { PostgresStore } from './dbStore';
+import { User } from 'src/user/entities/user.entity';
+import { Track } from 'src/track/entities/track.entity';
+import { Album } from 'src/album/entities/album.entity';
+import { Artist } from 'src/artist/entities/artist.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class AlbumStore extends InMemoryStore<
-  IAlbum,
+export class AlbumStore extends PostgresStore<
+  Album,
   CreateAlbumDto,
   UpdateAlbumDto
-> {}
+> {
+  protected store: new () => Album;
+
+  constructor(
+    @InjectRepository(Album)
+    protected readonly repository: Repository<Album>,
+  ) {
+    super(repository);
+  }
+}
 
 @Injectable()
-export class ArtistStore extends InMemoryStore<
-  IArtist,
+export class ArtistStore extends PostgresStore<
+  Artist,
   CreateArtistDto,
   UpdateArtistDto
-> {}
+> {
+  protected store: new () => Artist;
+
+  constructor(
+    @InjectRepository(Artist)
+    protected readonly repository: Repository<Artist>,
+  ) {
+    super(repository);
+  }
+}
 
 @Injectable()
-export class TrackStore extends InMemoryStore<
-  ITrack,
+export class TrackStore extends PostgresStore<
+  Track,
   CreateTrackDto,
   UpdateTrackDto
-> {}
+> {
+  protected store: new () => Track;
+
+  constructor(
+    @InjectRepository(Track)
+    protected readonly repository: Repository<Track>,
+  ) {
+    super(repository);
+  }
+}
 
 @Injectable()
-export class UserStore extends InMemoryStore<
-  IUser,
+export class UserStore extends PostgresStore<
+  User,
   CreateUserDto,
   UpdateUserDto
-> {}
+> {
+  protected store: new () => User;
+
+  constructor(
+    @InjectRepository(User)
+    protected readonly repository: Repository<User>,
+  ) {
+    super(repository);
+  }
+}
 
 @Injectable()
 export class GlobalService {

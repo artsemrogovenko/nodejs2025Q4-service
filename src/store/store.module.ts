@@ -7,6 +7,10 @@ import {
   TrackStore,
 } from './appStores';
 import { FavoritesStore } from './in-memory';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Artist } from 'src/artist/entities/artist.entity';
+import { Album } from 'src/album/entities/album.entity';
+import { Track } from 'src/track/entities/track.entity';
 
 @Module({
   providers: [
@@ -17,5 +21,10 @@ import { FavoritesStore } from './in-memory';
     FavoritesStore,
   ],
   exports: [GlobalService, ArtistStore, AlbumStore, TrackStore, FavoritesStore],
+  imports: [
+    TypeOrmModule.forFeature([Artist]),
+    TypeOrmModule.forFeature([Album]),
+    TypeOrmModule.forFeature([Track]),
+  ],
 })
 export class SharedStoreModule {}
