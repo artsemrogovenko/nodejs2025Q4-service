@@ -4,7 +4,7 @@ import { ValidationPipe } from './store/validation';
 import { SwaggerModule } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
 import * as YAML from 'yaml';
-import { loadEnvFile }from'node:process';
+import { loadEnvFile } from 'node:process';
 
 loadEnvFile('.env');
 

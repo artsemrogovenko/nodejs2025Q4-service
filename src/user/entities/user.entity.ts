@@ -1,8 +1,10 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsUUID } from 'class-validator';
 import type { IUser } from 'src/types';
+import { Entity } from 'typeorm';
 
+@Entity()
 export class User implements IUser {
-  @IsString()
+  @IsUUID()
   id!: string;
   login!: string;
   password!: string;

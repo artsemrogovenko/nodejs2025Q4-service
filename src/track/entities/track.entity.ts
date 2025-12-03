@@ -1,8 +1,10 @@
-import { IsEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 import type { ITrack } from 'src/types';
+import { Entity } from 'typeorm';
 
+@Entity()
 export class Track implements ITrack {
-  @IsString()
+  @IsUUID()
   id!: string;
 
   @IsString()

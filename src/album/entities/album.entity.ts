@@ -1,11 +1,20 @@
-import { IsEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsEmpty,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import type { IAlbum } from 'src/types';
+import { Entity } from 'typeorm';
 
+@Entity()
 export class Album implements IAlbum {
-  @IsString()
+  @IsUUID()
   id!: string;
 
   @IsString()
+  @IsNotEmpty()
   name!: string;
 
   @IsNumber()
