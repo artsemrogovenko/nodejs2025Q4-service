@@ -14,7 +14,7 @@ git clone {repository URL}
 ## Installing NPM modules
 
 ```
-npm install
+npm install --force
 ```
 ## Rename .env.example
 ```
