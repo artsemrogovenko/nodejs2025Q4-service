@@ -1,13 +1,21 @@
 import { IsArray } from 'class-validator';
 import type { IFavorites } from 'src/types';
-import { Entity } from 'typeorm';
+import { Column, Entity, ObjectLiteral, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
-export class Favorite implements IFavorites {
+@Entity('favorites')
+export class Favorite implements IFavorites, ObjectLiteral {
   @IsArray()
-  artists!: string[];
+  @Column({ type: 'uuid', array: true, default: [] })
+  artists: string[];
+
   @IsArray()
-  albums!: string[];
+  @Column({ type: 'uuid', array: true, default: [] })
+  albums: string[];
+
   @IsArray()
-  tracks!: string[];
+  @Column({ type: 'uuid', array: true, default: [] })
+  tracks: string[];
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 }

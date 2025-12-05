@@ -4,13 +4,14 @@ import { User } from './user/entities/user.entity';
 import { Album } from './album/entities/album.entity';
 import { Artist } from './artist/entities/artist.entity';
 import { Track } from './track/entities/track.entity';
+import { Favorite } from './favorites/entities/favorite.entity';
 
 loadEnvFile('.env');
 
 const USERNAME = process.env.USERNAME;
 const PASSWORD = process.env.PASSWORD;
 const DATABASE = process.env.DATABASE;
-const PORT = parseInt(process.env.PORT_HOST, 10);
+const PORT = Number(process.env.PORT_HOST);
 
 export default TypeOrmModule.forRoot({
   type: 'postgres',
@@ -19,7 +20,7 @@ export default TypeOrmModule.forRoot({
   username: USERNAME,
   password: PASSWORD,
   database: DATABASE,
-  entities: [User, Album, Artist, Track],
+  entities: [User, Album, Artist, Track, Favorite],
   synchronize: true,
   logging: ['query'],
 });

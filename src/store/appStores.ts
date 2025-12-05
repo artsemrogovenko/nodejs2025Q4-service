@@ -6,7 +6,6 @@ import type { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import type { UpdateAlbumDto } from 'src/album/dto/update-album.dto';
 import type { CreateArtistDto } from 'src/artist/dto/create-artist.dto';
 import type { UpdateArtistDto } from 'src/artist/dto/update-artist.dto';
-import { FavoritesStore } from './in-memory';
 import { Injectable } from '@nestjs/common';
 import { MyNotFound } from 'src/utils/utils';
 import { PostgresStore } from './dbStore';
@@ -16,6 +15,7 @@ import { Album } from 'src/album/entities/album.entity';
 import { Artist } from 'src/artist/entities/artist.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FavoritesDB } from './favoritesStore';
 
 @Injectable()
 export class AlbumStore extends PostgresStore<
@@ -87,7 +87,7 @@ export class GlobalService {
     private artistStore: ArtistStore,
     private albumStore: AlbumStore,
     private trackStore: TrackStore,
-    private favoritesStore: FavoritesStore,
+    private favoritesStore: FavoritesDB,
   ) {}
 
   async refArtistToAlbum(albumId: string, artistId: string) {
@@ -144,8 +144,8 @@ export class GlobalService {
       .filter((album) => album.artistId === artistId)
       .pop();
     if (album) {
-      album.artistId = null;
-      await this.albumStore.update(album.id, album);
+      const updated = { ...album, artistId: null };
+      await this.albumStore.update(album.id, updated);
     }
   }
 
@@ -155,14 +155,14 @@ export class GlobalService {
       .filter((track) => track.albumId === albumId)
       .pop();
     if (track) {
-      track.albumId = null;
-      await this.albumStore.update(track.id, track);
+      const updated = { ...track, albumId: null };
+      await this.trackStore.update(track.id, updated);
     }
   }
 
   async deleteAlbum(albumId: string) {
-    this.favoritesStore.deleteAlbum(albumId);
     await this.unrefAlbum(albumId);
+    this.favoritesStore.deleteAlbum(albumId);
     return await this.albumStore.remove(albumId);
   }
 

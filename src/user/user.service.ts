@@ -29,8 +29,8 @@ export class UserService extends BaseService<
       version: oldvalue.version + 1,
       updatedAt: timestamp(),
     };
-    this.store.create(updated);
-    return updated;
+
+    return await this.store.update(oldvalue.id, updated);
   }
 
   async create(createDto: CreateUserDto): Promise<IUser> {

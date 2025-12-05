@@ -29,9 +29,9 @@ export abstract class PostgresStore<
     return entity || undefined;
   }
 
-  async update(id: string, updateDto: U): Promise<T | undefined> {
+  async update(id: string, updateDto: U | T): Promise<T | undefined> {
     await this.repository.update(id, updateDto as any);
-    return this.findOne(id);
+    return await this.findOne(id);
   }
 
   async remove(id: string): Promise<boolean> {
