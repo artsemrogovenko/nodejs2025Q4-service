@@ -8,15 +8,18 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/artsemrogovenko/nodejs2025Q4-service.git
 ```
 
 ## Installing NPM modules
 
 ```
-npm install
+cd nodejs2025Q4-service/ && git checkout prod && npm install --force
 ```
-
+## Rename .env.example
+```
+git mv .env.example .env
+```
 ## Running application
 
 ```
@@ -24,7 +27,7 @@ npm start
 ```
 
 After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+in your browser OpenAPI documentation by typing http://localhost:4000/api.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
