@@ -5,22 +5,26 @@ import { Album } from './album/entities/album.entity';
 import { Artist } from './artist/entities/artist.entity';
 import { Track } from './track/entities/track.entity';
 import { Favorite } from './favorites/entities/favorite.entity';
+import { existsSync } from 'node:fs';
 
 loadEnvFile('.env');
 
-const USERNAME = process.env.USERNAME;
+const USERNAME = process.env.GUEST_USERNAME;
 const PASSWORD = process.env.PASSWORD;
 const DATABASE = process.env.DATABASE;
-const PORT = Number(process.env.PORT_HOST);
+const PORT = Number(process.env.PORT_DB);
+const HOST = () => {
+  return existsSync('/.dockerenv') ? process.env.HOST_DB : 'localhost';
+};
 
 export default TypeOrmModule.forRoot({
   type: 'postgres',
-  host: 'localhost',
+  host: HOST(),
   port: PORT,
   username: USERNAME,
   password: PASSWORD,
   database: DATABASE,
   entities: [User, Album, Artist, Track, Favorite],
   synchronize: true,
-  logging: ['query'],
+  logging: ['error'],
 });

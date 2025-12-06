@@ -9,20 +9,37 @@ services:
       POSTGRES_PASSWORD: ${PASSWORD}
       POSTGRES_DB: ${DATABASE}
     ports:
-      - "${PORT_HOST}:${PORT_DB}" 
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
+      - "${PORT_DB}:${PORT_DB}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${USERNAME} -d ${DATABASE}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${USERNAME} -d ${DATABASE}" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  app_service:
+    image: taftoos/service-part1
+    container_name: rest_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - ./.env:/usr/app/.env:ro
+      - ./src:/usr/app/src:rw
 
 networks:
   app-network:
     driver: bridge
 
-# volumes:
-#   postgres_data:
+volumes:
+  postgres_data:
