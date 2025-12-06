@@ -4,6 +4,7 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Docker - [Mac](https://docs.docker.com/desktop/setup/install/mac-install/) - [Windows](https://docs.docker.com/desktop/setup/install/windows-install/) - [Linux](https://docs.docker.com/desktop/setup/install/linux/)
 
 ## Downloading
 
@@ -14,17 +15,22 @@ git clone https://github.com/artsemrogovenko/nodejs2025Q4-service.git
 ## Installing NPM modules
 
 ```
-npm install
+cd nodejs2025Q4-service/ && git checkout part2 && npm install
 ```
+
 ## Rename .env.example
+
 ```
 git mv .env.example .env
 ```
+
 ## Running application
 
-```
-npm start
-```
+| Run local                      | Run in containers                                |
+| ------------------------------ | ------------------------------------------------ |
+| 1 `docker-compose up postgres` | 1 `docker-compose up`                            |
+|                                | 2 Wait for the message to appear in the console: |
+| 2 `npm start`                  | **Nest application successfully started**        |
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/api/.
@@ -37,35 +43,47 @@ After application running open new terminal and enter:
 To run all tests without authorization
 
 ```
+
 npm run test
+
 ```
 
 To run only one of all test suites
 
 ```
+
 npm run test -- <path to suite>
+
 ```
 
 To run all test with authorization
 
 ```
+
 npm run test:auth
+
 ```
 
 To run only specific test suite with authorization
 
 ```
+
 npm run test:auth -- <path to suite>
+
 ```
 
 ### Auto-fix and format
 
 ```
+
 npm run lint
+
 ```
 
 ```
+
 npm run format
+
 ```
 
 ### Debugging in VSCode
