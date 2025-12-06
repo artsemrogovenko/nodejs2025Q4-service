@@ -14,7 +14,7 @@ git clone https://github.com/artsemrogovenko/nodejs2025Q4-service.git
 ## Installing NPM modules
 
 ```
-cd nodejs2025Q4-service/ && git checkout dev && npm install --force
+cd nodejs2025Q4-service/ && git checkout prod && npm install --force
 ```
 ## Rename .env.example
 ```
