@@ -1,7 +1,7 @@
 FROM node:24-alpine3.23
 WORKDIR /usr/app
 COPY package*.json .
+RUN npm audit
 RUN npm install
 COPY . .
-EXPOSE ${PORT}
-CMD ["npm","run","start:dev"]
+CMD ["npm", "run", "start:dev"]

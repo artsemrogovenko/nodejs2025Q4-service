@@ -38,5 +38,7 @@ nodejs-sample-kubernetes.yaml
 README.md
 .husky
 .prettierrc
+.dockerignore
 Dockerfile
-*.sql
+src/
+test/

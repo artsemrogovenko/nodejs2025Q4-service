@@ -9,7 +9,7 @@ import { existsSync } from 'node:fs';
 
 loadEnvFile('.env');
 
-const USERNAME = process.env.GUEST_USERNAME;
+const USERNAME = process.env.USER_NAME;
 const PASSWORD = process.env.PASSWORD;
 const DATABASE = process.env.DATABASE;
 const PORT = Number(process.env.PORT_DB);
