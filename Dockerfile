@@ -4,4 +4,4 @@ COPY package*.json .
 RUN npm audit
 RUN npm install
 COPY . .
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "migration:dev"]

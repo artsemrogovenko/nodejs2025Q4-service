@@ -15,13 +15,13 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${USER_NAME} -d ${DATABASE}" ]
+      test: ['CMD-SHELL', 'pg_isready -U ${USER_NAME} -d ${DATABASE}']
       interval: ${HEALTH_INTERVAL}
       timeout: ${HEALTH_TIMEOUT}
       retries: ${HEALTH_RETRIES}
 
   app_service:
-    image: taftoos/service-part2
+    image: taftoos/service-part3
     container_name: rest_app
     restart: always
     env_file:

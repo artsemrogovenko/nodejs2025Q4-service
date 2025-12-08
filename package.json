@@ -23,7 +23,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "prepare": "husky"
+    "prepare": "husky",
+    "migration:show": "typeorm-ts-node-commonjs migration:show -d src/migration.ts",
+    "migration:generate": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/migration.ts src/migrations/migration",
+    "migration:run": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/migration.ts",
+    "migration:dev": "npm run migration:run && npm run start:dev"
   },
   "lint-staged": {
     "*.{js,ts}": [
