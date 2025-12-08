@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { TrackStore, GlobalService } from 'src/store/appStores';
-import { ITrack } from 'src/types';
 import { BaseService } from 'src/store/baseService';
+import { Track } from './entities/track.entity';
 
 @Injectable()
 export class TrackService extends BaseService<
-  ITrack,
+  Track,
   CreateTrackDto,
   UpdateTrackDto
 > {
@@ -18,7 +18,7 @@ export class TrackService extends BaseService<
     super(store);
   }
 
-  async update(id: string, updateDto: UpdateTrackDto): Promise<ITrack> {
+  async update(id: string, updateDto: UpdateTrackDto): Promise<Track> {
     const track = await this.store.findOne(id);
     if (track) {
       if (track.albumId !== updateDto.albumId) {

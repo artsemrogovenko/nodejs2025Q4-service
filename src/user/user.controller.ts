@@ -13,11 +13,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {
   BaseServiceInterceptor,
-  ExcludePassword,
+  UserResponseModifer,
 } from 'src/store/interceptors';
 
 @Controller('user')
-@UseInterceptors(ExcludePassword, BaseServiceInterceptor)
+@UseInterceptors(UserResponseModifer, BaseServiceInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

@@ -1,13 +1,33 @@
-import { IsBoolean, IsString } from 'class-validator';
-import type { IArtist } from 'src/types';
+import { IsBoolean, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Album } from 'src/album/entities/album.entity';
+import { Track } from 'src/track/entities/track.entity';
+import { IArtist } from 'src/types';
+import {
+  Column,
+  Entity,
+  ObjectLiteral,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
-export class Artist implements IArtist {
-  @IsString()
+@Entity()
+export class Artist implements IArtist, ObjectLiteral {
+  @IsUUID()
+  @PrimaryColumn()
   id!: string;
 
   @IsString()
-  name!: string;
+  @IsNotEmpty()
+  @Column()
+  name: string;
 
   @IsBoolean()
-  grammy!: boolean;
+  @Column({ type: 'boolean' })
+  grammy: boolean;
+
+  @OneToMany(() => Album, (album) => album.artist)
+  albums: Album[];
+
+  @OneToMany(() => Track, (track) => track.artist)
+  tracks: Track[];
 }

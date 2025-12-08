@@ -4,11 +4,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserStore } from 'src/store/appStores';
 import { IUser } from 'src/types';
 import { BaseService } from 'src/store/baseService';
-import { timestamp } from 'src/utils/utils';
+import { timestamp, uuid } from 'src/utils/utils';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService extends BaseService<
-  IUser,
+  User,
   CreateUserDto,
   UpdateUserDto
 > {
@@ -28,13 +29,13 @@ export class UserService extends BaseService<
       version: oldvalue.version + 1,
       updatedAt: timestamp(),
     };
-    this.store.db.set(id, updated);
-    return updated;
+
+    return await this.store.update(oldvalue.id, updated);
   }
 
   async create(createDto: CreateUserDto): Promise<IUser> {
     const user: IUser = {
-      id: null,
+      id: uuid(),
       login: createDto.login,
       password: createDto.password,
       version: 1,

@@ -1,17 +1,51 @@
-import { IsEmpty, IsNumber, IsString } from 'class-validator';
-import type { IAlbum } from 'src/types';
+import {
+  IsEmpty,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { Artist } from 'src/artist/entities/artist.entity';
+import { Track } from 'src/track/entities/track.entity';
+import { IAlbum } from 'src/types';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  ObjectLiteral,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
-export class Album implements IAlbum {
-  @IsString()
+@Entity()
+export class Album implements IAlbum, ObjectLiteral {
+  @IsUUID()
+  @PrimaryColumn()
   id!: string;
 
   @IsString()
-  name!: string;
+  @IsNotEmpty()
+  @Column({ default: 'unknown' })
+  name: string;
 
   @IsNumber()
-  year!: number;
+  @Column({ type: 'int' })
+  year: number;
 
   @IsString()
   @IsEmpty()
-  artistId!: string | null;
+  @Column({ type: 'uuid', nullable: true })
+  artistId: string | null;
+
+  @ManyToOne(() => Artist, (artist) => artist.albums, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    createForeignKeyConstraints: false,
+  })
+  @JoinColumn({ name: 'artistId' })
+  artist: Artist | null;
+
+  @OneToMany(() => Track, (track) => track.album)
+  tracks: Track[];
 }

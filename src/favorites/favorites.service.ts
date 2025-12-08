@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { AlbumStore, ArtistStore, TrackStore } from 'src/store/appStores';
-import { FavoritesStore } from 'src/store/in-memory';
+import { FavoritesDB } from 'src/store/favoritesStore';
 import { FavoritesResponse, IAlbum, IArtist, ITrack } from 'src/types';
 
 @Injectable()
 export class FavoritesService {
   constructor(
-    private favoritesStore: FavoritesStore,
+    private favoritesStore: FavoritesDB,
     private albumStore: AlbumStore,
     private artistStore: ArtistStore,
     private trackStore: TrackStore,
@@ -15,21 +15,21 @@ export class FavoritesService {
   async addArtist(id: string) {
     const artist = await this.artistStore.findOne(id);
     if (artist) {
-      return this.favoritesStore.addArtist(artist);
+      return this.favoritesStore.addArtist(artist.id);
     }
     return false;
   }
   async addTrack(id: string) {
     const track = await this.trackStore.findOne(id);
     if (track) {
-      return this.favoritesStore.addTrack(track);
+      return this.favoritesStore.addTrack(track.id);
     }
     return false;
   }
   async addAlbum(id: string) {
     const album = await this.albumStore.findOne(id);
     if (album) {
-      return this.favoritesStore.addAlbum(album);
+      return this.favoritesStore.addAlbum(album.id);
     }
     return false;
   }
