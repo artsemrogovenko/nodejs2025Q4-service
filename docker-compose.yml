@@ -37,6 +37,7 @@ services:
       - ./.env:/usr/app/.env:ro
       - ./src:/usr/app/src:ro
       - ./test:/usr/app/test:ro
+      - ./doc:/usr/app/doc:ro
       - /usr/app/node_modules
 
 networks:
