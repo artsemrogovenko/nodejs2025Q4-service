@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Body,
   SetMetadata,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -18,21 +19,21 @@ export class AuthController {
   @SetMetadata('isPublic', true)
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body() dto: SignUpDto) {
+  async signup(@Body(new ValidationPipe()) dto: SignUpDto) {
     return this.authService.signup(dto);
   }
 
   @SetMetadata('isPublic', true)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() dto: LoginDto) {
+  async login(@Body(new ValidationPipe()) dto: LoginDto) {
     return this.authService.login(dto);
   }
 
   @SetMetadata('isPublic', true)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Body() dto: RefreshDto) {
+  async refresh(@Body(new ValidationPipe()) dto: RefreshDto) {
     return this.authService.refresh(dto);
   }
 }

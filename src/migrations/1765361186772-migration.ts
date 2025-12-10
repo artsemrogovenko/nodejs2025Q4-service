@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Migration1765225525808 implements MigrationInterface {
-  name = 'Migration1765225525808';
+export class Migration1765361186772 implements MigrationInterface {
+  name = 'Migration1765361186772';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -19,9 +19,13 @@ export class Migration1765225525808 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TABLE "user" ("id" character varying NOT NULL, "login" character varying NOT NULL, "password" character varying NOT NULL, "version" integer NOT NULL, "createdAt" bigint NOT NULL, "updatedAt" bigint NOT NULL, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
     );
+    await queryRunner.query(
+      `CREATE TABLE "auth_user" ("id" character varying NOT NULL, "login" character varying NOT NULL, "passwordHash" character varying NOT NULL, CONSTRAINT "PK_9922406dc7d70e20423aeffadf3" PRIMARY KEY ("id"))`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DROP TABLE "auth_user"`);
     await queryRunner.query(`DROP TABLE "user"`);
     await queryRunner.query(`DROP TABLE "favorites"`);
     await queryRunner.query(`DROP TABLE "album"`);

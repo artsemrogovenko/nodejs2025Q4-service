@@ -117,7 +117,7 @@ security:
   - bearerAuth: []
 
 paths:
-  /login:
+  /auth/login:
     post:
       tags:
         - Login
@@ -154,7 +154,7 @@ paths:
                 description: JWT Token
         403:
           description: Incorrect login or password
-  /signup:
+  /auth/signup:
     post:
       tags:
         - Signup

@@ -19,17 +19,13 @@ export class AuthUserRepository {
     return await this.repository.findOne({ where: { id } as any });
   }
 
-  async findOneByLogin(login: string): Promise<AuthUser | null> {
-    return await this.repository.findOne({ where: { login } as any });
-  }
-
   async update(id: string, data: Partial<AuthUser>): Promise<AuthUser> {
     await this.repository.update(id, data as any);
     return await this.findOneById(id);
   }
 
   async findByLogin(login: string): Promise<AuthUser | null> {
-    return this.findOneByLogin(login);
+    return await this.repository.findOne({ where: { login } as any });
   }
 
   async updateRefreshToken(
