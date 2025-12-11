@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { loadEnvFile } from 'process';
@@ -72,7 +71,7 @@ export class AuthService {
   async login(dto: LoginDto): Promise<Token> {
     const user = await this.authUserRepository.findByLogin(dto.login);
     if (!user) {
-      throw new UnauthorizedException();
+      throw new BadRequestException('Incorrect username');
     }
 
     const passwordMatch = await bcrypt.compare(dto.password, user.passwordHash);

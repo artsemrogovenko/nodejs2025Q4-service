@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Post,
-  HttpCode,
-  HttpStatus,
-  Body,
-  SetMetadata,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Post, HttpCode, HttpStatus, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
@@ -16,24 +8,24 @@ import { SignUpDto } from './dto/signup.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @SetMetadata('isPublic', true)
+  // @SetMetadata('isPublic', true)
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body(new ValidationPipe()) dto: SignUpDto) {
+  async signup(@Body() dto: SignUpDto) {
     return this.authService.signup(dto);
   }
 
-  @SetMetadata('isPublic', true)
+  // @SetMetadata('isPublic', true)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body(new ValidationPipe()) dto: LoginDto) {
+  async login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
 
-  @SetMetadata('isPublic', true)
+  // @SetMetadata('isPublic', true)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Body(new ValidationPipe()) dto: RefreshDto) {
+  async refresh(@Body() dto: RefreshDto) {
     return this.authService.refresh(dto);
   }
 }
