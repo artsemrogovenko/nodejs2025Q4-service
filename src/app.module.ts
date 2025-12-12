@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import configDB from './ormModule';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { LoggingService } from './logging/logging.service';
+import { LoggerModule } from './logging/logging.module';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { AuthGuard } from './auth/auth.guard';
     FavoritesModule,
     configDB,
     AuthModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [
