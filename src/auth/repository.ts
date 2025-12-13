@@ -32,7 +32,9 @@ export class AuthUserRepository {
     userId: string,
     refreshToken: string,
   ): Promise<AuthUser> {
-    return this.update(userId, { refreshToken } as any);
+    const user = await this.findOneById(userId);
+    user.refreshToken = refreshToken;
+    return this.update(userId, user);
   }
 
   async findUserByRefreshToken(refreshToken: string): Promise<AuthUser | null> {

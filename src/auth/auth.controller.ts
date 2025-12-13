@@ -29,7 +29,6 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
-  @SetMetadata('isPublic', true)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   refresh(@Body() dto: RefreshDto) {

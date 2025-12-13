@@ -10,8 +10,8 @@ services:
       POSTGRES_DB: ${DATABASE}
     ports:
       - '${PORT_DB}:${PORT_DB}'
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
     healthcheck:
@@ -40,6 +40,13 @@ services:
       - ./doc:/usr/app/doc:ro
       - ./logs:/usr/app/logs:rw
       - /usr/app/node_modules
+    develop:
+      watch:
+        - action: restart
+          path: ./src
+          target: /usr/app/src
+          ignore:
+            - node_modules
 
 networks:
   app-network:

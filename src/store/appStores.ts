@@ -6,7 +6,7 @@ import type { CreateAlbumDto } from 'src/album/dto/create-album.dto';
 import type { UpdateAlbumDto } from 'src/album/dto/update-album.dto';
 import type { CreateArtistDto } from 'src/artist/dto/create-artist.dto';
 import type { UpdateArtistDto } from 'src/artist/dto/update-artist.dto';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { MyNotFound } from 'src/utils/utils';
 import { PostgresStore } from './dbStore';
 import { User } from 'src/user/entities/user.entity';
@@ -78,6 +78,20 @@ export class UserStore extends PostgresStore<
     protected readonly repository: Repository<User>,
   ) {
     super(repository);
+  }
+
+  async create(dto: CreateUserDto): Promise<User> {
+    const isExists = await this.getByLogin(dto.login);
+    if (isExists) {
+      throw new BadRequestException('User already exists');
+    }
+    return super.create(dto);
+  }
+
+  async getByLogin(login: string) {
+    return await this.repository.findOne({
+      where: { login: login },
+    });
   }
 }
 
