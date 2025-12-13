@@ -62,8 +62,7 @@ export class AuthService {
       );
 
       return token;
-    } catch (error) {
-      console.log(error);
+    } catch {
       throw new ForbiddenException('Invalid refresh token');
     }
   }

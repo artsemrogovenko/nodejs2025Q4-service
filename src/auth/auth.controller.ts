@@ -18,21 +18,21 @@ export class AuthController {
   @SetMetadata('isPublic', true)
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body() dto: SignUpDto) {
+  signup(@Body() dto: SignUpDto) {
     return this.authService.signup(dto);
   }
 
   @SetMetadata('isPublic', true)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() dto: LoginDto) {
+  login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
 
   @SetMetadata('isPublic', true)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Body() dto: RefreshDto) {
+  refresh(@Body() dto: RefreshDto) {
     return this.authService.refresh(dto);
   }
 }
