@@ -9,7 +9,7 @@ export class AuthUser {
   @Column()
   login: string;
 
-  @Column()
+  @Column({ nullable: true })
   passwordHash: string;
 
   @Column({ nullable: true })

@@ -26,7 +26,7 @@ git mv .env.example .env
 
 ## Running application
 
-| Run local                      | Run in containers                                |
+| Run database                       | Run all containers                                |
 | ------------------------------ | ------------------------------------------------ |
 | 1 `docker-compose up postgres` | 1 `docker-compose up`                            |
 |                                | 2 Wait for the message to appear in the console: |

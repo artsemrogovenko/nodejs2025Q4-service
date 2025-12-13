@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { LoggingService } from './logging.service';
+import { LoggingMiddleware } from './middleware';
 
 @Module({
   providers: [LoggingService],
@@ -7,6 +8,6 @@ import { LoggingService } from './logging.service';
 })
 export class LoggerModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    throw new Error('Method not implemented.');
+    consumer.apply(LoggingMiddleware).forRoutes('*');
   }
 }

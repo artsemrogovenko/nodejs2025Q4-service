@@ -70,8 +70,8 @@ export class AuthService {
 
   async login(dto: LoginDto): Promise<Token> {
     const user = await this.authUserRepository.findByLogin(dto.login);
-    if (!user) {
-      throw new BadRequestException('Incorrect username');
+    if (!user || !user.passwordHash) {
+      throw new BadRequestException('User is not exist');
     }
 
     const passwordMatch = await bcrypt.compare(dto.password, user.passwordHash);

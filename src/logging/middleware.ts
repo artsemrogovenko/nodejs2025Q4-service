@@ -7,6 +7,6 @@ export class LoggingMiddleware implements NestMiddleware {
   constructor(private readonly loggingService: LoggingService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-   
+    next();
   }
 }

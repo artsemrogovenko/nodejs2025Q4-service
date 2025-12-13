@@ -38,6 +38,7 @@ services:
       - ./src:/usr/app/src:ro
       - ./test:/usr/app/test:ro
       - ./doc:/usr/app/doc:ro
+      - ./logs:/usr/app/logs:rw
       - /usr/app/node_modules
 
 networks:
