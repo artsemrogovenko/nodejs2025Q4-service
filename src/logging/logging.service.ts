@@ -11,27 +11,39 @@ import { loadEnvFile } from 'node:process';
 loadEnvFile('.env');
 
 const maxFileSize = Number(process.env.MAX_SIZE);
+const depth = Number(process.env.LOG_LEVELS);
 
 @Injectable()
 export class LoggingService implements LoggerService {
+  private levelPriority = ['verbose', 'debug', 'log', 'warn', 'error', 'fatal'];
+  private activeLevels: string[] = [];
+
+  constructor() {
+    this.activeLevels = this.levelPriority.reverse().slice(0, depth);
+  }
+
+  private shouldLog(level: LogLevel) {
+    return this.activeLevels.includes(level);
+  }
+
   log(message: string) {
-    this.writeFile(message, 'log');
+    if (this.shouldLog('log')) this.writeFile(message, 'log');
   }
   warn(message: string) {
-    this.writeFile(message, 'warn');
+    if (this.shouldLog('warn')) this.writeFile(message, 'warn');
   }
   debug?(message: string) {
-    this.writeFile(message, 'debug');
+    if (this.shouldLog('debug')) this.writeFile(message, 'debug');
   }
   verbose?(message: string) {
-    this.writeFile(message, 'verbose');
+    if (this.shouldLog('verbose')) this.writeFile(message, 'verbose');
   }
   fatal?(message: string) {
-    this.writeFile(message, 'fatal');
+    if (this.shouldLog('fatal')) this.writeFile(message, 'fatal');
   }
 
   error(message: string) {
-    this.writeFile(message, 'error');
+    if (this.shouldLog('error')) this.writeFile(message, 'error');
   }
 
   private async writeFile(message: string, type: LogLevel) {
