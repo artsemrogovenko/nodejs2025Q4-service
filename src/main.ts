@@ -21,7 +21,7 @@ async function bootstrap() {
   SwaggerModule.setup('doc', app, document);
 
   const logger = app.get(LoggingService);
-  // app.useLogger(logger);
+  app.useLogger(logger);
   app.useGlobalFilters(new CustomExceptionFilter(logger));
 
   process.on('unhandledRejection', (reason) => {

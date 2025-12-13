@@ -1,5 +1,11 @@
 import { Injectable, LoggerService, LogLevel } from '@nestjs/common';
-import { appendFileSync, existsSync, mkdirSync, statSync } from 'node:fs';
+import {
+  appendFileSync,
+  existsSync,
+  mkdirSync,
+  renameSync,
+  statSync,
+} from 'node:fs';
 import { loadEnvFile } from 'node:process';
 
 loadEnvFile('.env');
@@ -28,14 +34,14 @@ export class LoggingService implements LoggerService {
     this.writeFile(message, 'error');
   }
 
-  private writeFile(message: string, type: LogLevel) {
+  private async writeFile(message: string, type: LogLevel) {
     const timestamp = new Date()
       .toISOString()
       .replace('T', ' ')
       .replace('Z', '');
     const logMessage = `[${timestamp}] [${type}] ${message}\n`;
-    const dir = './logs';
-    let filename = `${dir}/${type}.log`;
+    const dir = `./logs/${type}`;
+    const filename = `${dir}/${type}.log`;
 
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
@@ -43,11 +49,12 @@ export class LoggingService implements LoggerService {
 
     if (existsSync(filename)) {
       const stat = statSync(filename);
-      if (stat.size > maxFileSize) {
-        filename = `${filename}-${timestamp}.log`;
+      if (stat.size >= maxFileSize) {
+        const archiveName = `${filename}-${timestamp}.log`;
+        renameSync(filename, archiveName);
       }
     }
 
-    appendFileSync(filename, logMessage);
+    appendFileSync(filename, logMessage, { encoding: 'utf8' });
   }
 }

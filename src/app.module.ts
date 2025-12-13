@@ -10,7 +10,6 @@ import { AuthModule } from './auth/auth.module';
 import configDB from './ormModule';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
-import { LoggingService } from './logging/logging.service';
 import { LoggerModule } from './logging/logging.module';
 
 @Module({
