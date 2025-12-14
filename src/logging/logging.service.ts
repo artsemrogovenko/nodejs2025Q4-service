@@ -1,6 +1,7 @@
 import { Injectable, LoggerService, LogLevel } from '@nestjs/common';
 import {
   appendFileSync,
+  chmodSync,
   existsSync,
   mkdirSync,
   renameSync,
@@ -52,12 +53,19 @@ export class LoggingService implements LoggerService {
       .replace('T', ' ')
       .replace('Z', '');
     const logMessage = `[${timestamp}] [${type}] ${message}\n`;
-    const dir = `./logs/${type}`;
-    const filename = `${dir}/${type}.log`;
+    const rootDir = './logs';
+    const typedDir = `${rootDir}/${type}`;
+    const filename = `${typedDir}/${type}.log`;
 
-    if (!existsSync(dir)) {
-      mkdirSync(dir, { recursive: true });
+    if (!existsSync(rootDir)) {
+      mkdirSync(rootDir, { recursive: true });
     }
+    chmodSync(rootDir, 0o777);
+
+    if (!existsSync(typedDir)) {
+      mkdirSync(typedDir, { recursive: true });
+    }
+    chmodSync(typedDir, 0o777);
 
     if (existsSync(filename)) {
       const stat = statSync(filename);
@@ -68,5 +76,6 @@ export class LoggingService implements LoggerService {
     }
 
     appendFileSync(filename, logMessage, { encoding: 'utf8' });
+    chmodSync(filename, 0o777);
   }
 }

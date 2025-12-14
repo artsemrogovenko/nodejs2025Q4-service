@@ -6,7 +6,6 @@ import { Artist } from './artist/entities/artist.entity';
 import { Favorite } from './favorites/entities/favorite.entity';
 import { Track } from './track/entities/track.entity';
 import { User } from './user/entities/user.entity';
-import { AuthUser } from './auth/entities/auth.entity';
 loadEnvFile('.env');
 const HOST = () => {
   return existsSync('/.dockerenv') ? process.env.HOST_DB : 'localhost';
@@ -19,7 +18,7 @@ const AppDataSource = new DataSource({
   username: process.env.USER_NAME,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  entities: [User, Album, Artist, Track, Favorite, AuthUser],
+  entities: [User, Album, Artist, Track, Favorite],
   migrations: ['src/migrations/*.ts'],
   migrationsTableName: 'migrations',
   synchronize: false,

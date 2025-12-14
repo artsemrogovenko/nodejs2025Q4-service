@@ -2,15 +2,14 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { loadEnvFile } from 'process';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { SignUpDto } from './dto/signup.dto';
-import { AuthUser } from './entities/auth.entity';
 import { JwtPayload, Token } from './interfaces';
-import { AuthUserRepository } from './repository';
 import { JwtService } from '@nestjs/jwt';
 import { UserStore } from 'src/store/appStores';
 
@@ -19,7 +18,6 @@ loadEnvFile('.env');
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly authUserRepository: AuthUserRepository,
     private readonly userStore: UserStore,
     private readonly jwtService: JwtService,
   ) {}
@@ -33,39 +31,25 @@ export class AuthService {
       password: hash,
     });
 
-    await this.authUserRepository.create({ id: user.id, login: user.login });
-
     return user;
   }
 
   async refresh(dto: RefreshDto): Promise<Token> {
+    if (!dto || Object.keys(dto).length === 0) {
+      throw new UnauthorizedException('No refresh token');
+    }
     try {
-      const { userId, login } = await this.jwtService.verifyAsync(
-        dto.refreshToken,
-        {
-          secret: process.env.JWT_SECRET_REFRESH_KEY,
-        },
-      );
+      const payload = (await this.jwtService.verifyAsync(dto.refreshToken, {
+        secret: process.env.JWT_SECRET_REFRESH_KEY,
+      })) as JwtPayload;
 
-      const user = await this.authUserRepository.findUserByRefreshToken(
-        dto.refreshToken,
-      );
-      if (!user) {
-        throw new ForbiddenException('Invalid refresh token');
-      }
-
-      const token = await this.generateToken({
-        id: userId,
-        login: login,
-      } as AuthUser);
-
-      await this.authUserRepository.updateRefreshToken(
-        user.id,
-        token.refreshToken,
-      );
+      const token = await this.generateToken(payload);
 
       return token;
-    } catch {
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        throw new ForbiddenException('Expired refresh token');
+      }
       throw new ForbiddenException('Invalid refresh token');
     }
   }
@@ -82,23 +66,17 @@ export class AuthService {
     }
 
     const token = await this.generateToken({
-      id: user.id,
+      userId: user.id,
       login: user.login,
-    } as AuthUser);
-
-    await this.authUserRepository.update(user.id, {
-      id: user.id,
-      login: user.login,
-      refreshToken: token.refreshToken,
     });
 
     return token;
   }
 
-  private async generateToken(user: AuthUser): Promise<Token> {
+  private async generateToken(jwt: JwtPayload): Promise<Token> {
     const payload: JwtPayload = {
-      userId: user.id,
-      login: user.login,
+      userId: jwt.userId,
+      login: jwt.login,
     };
 
     const accessToken = await this.jwtService.signAsync(payload, {
