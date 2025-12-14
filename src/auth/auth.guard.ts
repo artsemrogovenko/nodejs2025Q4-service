@@ -11,7 +11,13 @@ loadEnvFile('.env');
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly publicRoutes = ['/auth/signup', '/auth/login', '/doc', '/'];
+  private readonly publicRoutes = [
+    '/auth/signup',
+    '/auth/login',
+    '/auth/refresh',
+    '/doc',
+    '/',
+  ];
 
   constructor(private jwtService: JwtService) {}
 

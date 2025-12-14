@@ -6,7 +6,6 @@ import { Artist } from './artist/entities/artist.entity';
 import { Track } from './track/entities/track.entity';
 import { Favorite } from './favorites/entities/favorite.entity';
 import { existsSync } from 'node:fs';
-import { AuthUser } from './auth/entities/auth.entity';
 
 loadEnvFile('.env');
 
@@ -25,7 +24,7 @@ export default TypeOrmModule.forRoot({
   username: USERNAME,
   password: PASSWORD,
   database: DATABASE,
-  entities: [User, Album, Artist, Track, Favorite, AuthUser],
+  entities: [User, Album, Artist, Track, Favorite],
   synchronize: false,
   // logging: ['error', 'query'],
 });

@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { AuthUser } from './entities/auth.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthUserRepository } from './repository';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
+import { loadEnvFile } from 'process';
+loadEnvFile('.env');
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, AuthUserRepository, JwtService],
+  providers: [AuthService, JwtService],
   imports: [
-    TypeOrmModule.forFeature([AuthUser]),
     UserModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
