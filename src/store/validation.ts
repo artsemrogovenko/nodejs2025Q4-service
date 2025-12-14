@@ -21,6 +21,7 @@ export class ValidationPipe implements PipeTransform<any> {
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
+    if (!value) return value;
     const { metatype, type, data } = metadata;
     if (type === 'param' && data === 'id') {
       return await this.uuidPipe.transform(value, metadata);

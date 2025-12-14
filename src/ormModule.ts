@@ -25,6 +25,6 @@ export default TypeOrmModule.forRoot({
   password: PASSWORD,
   database: DATABASE,
   entities: [User, Album, Artist, Track, Favorite],
-  synchronize: true,
-  logging: ['error'],
+  synchronize: false,
+  // logging: ['error', 'query'],
 });

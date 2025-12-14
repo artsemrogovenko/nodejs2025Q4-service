@@ -8,21 +8,21 @@ export class User implements IUser, ObjectLiteral {
   @PrimaryColumn()
   id!: string;
 
-  @Column()
+  @Column({ unique: true })
   login: string;
 
   @Column()
   password: string;
 
   @IsNumber()
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 1 })
   version: number;
 
   @IsNumber()
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', default: Date.now() })
   createdAt: number;
 
   @IsNumber()
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', default: Date.now() })
   updatedAt: number;
 }

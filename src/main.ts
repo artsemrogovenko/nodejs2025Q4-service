@@ -5,6 +5,8 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
 import * as YAML from 'yaml';
 import { loadEnvFile } from 'node:process';
+import { LoggingService } from './logging/logging.service';
+import { CustomExceptionFilter } from './logging/filter';
 
 loadEnvFile('.env');
 
@@ -16,7 +18,18 @@ async function bootstrap() {
 
   const file = readFileSync('./doc/api.yaml', 'utf8');
   const document = YAML.parse(file);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
+
+  const logger = app.get(LoggingService);
+  app.useLogger(logger);
+  app.useGlobalFilters(new CustomExceptionFilter(logger));
+
+  process.on('unhandledRejection', (reason) => {
+    logger.error(`[unhandledRejection] ${reason}`);
+  });
+  process.on('uncaughtException', (err) => {
+    logger.error(`[uncaughtException] ${err.message}`);
+  });
 
   await app.listen(PORT);
 }

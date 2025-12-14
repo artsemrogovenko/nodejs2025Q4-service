@@ -15,7 +15,7 @@ git clone https://github.com/artsemrogovenko/nodejs2025Q4-service.git
 ## Installing NPM modules
 
 ```
-cd nodejs2025Q4-service/ && git checkout part2 && npm install
+cd nodejs2025Q4-service/ && git checkout part3 && npm install
 ```
 
 ## Rename .env.example
@@ -26,14 +26,14 @@ git mv .env.example .env
 
 ## Running application
 
-| Run local                      | Run in containers                                |
-| ------------------------------ | ------------------------------------------------ |
-| 1 `docker-compose up postgres` | 1 `docker-compose up`                            |
-|                                | 2 Wait for the message to appear in the console: |
-| 2 `npm start`                  | **Nest application successfully started**        |
+| Run database if local develop  | Run all containers    |
+| ------------------------------ | --------------------- |
+| 1 `docker-compose up postgres` | 1 `docker-compose up` |
+|                                |                       |
+| 2 `npm migration:dev`          |                       |
 
 After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/api .
+in your browser OpenAPI documentation by typing http://localhost:4000/doc .
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
